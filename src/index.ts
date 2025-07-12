@@ -14,7 +14,15 @@ const PORT = process.env.PORT || 3000;
 const MAX_REQUEST_PER_15_MINUTES = (process.env.MAX_REQUEST_PER_15_MINUTES || 10).toString();
 const APPLICATION_URL = process.env.APPLICATION_URL || 'http://localhost:3000';
 
-app.use(cors({ origin: APPLICATION_URL }));
+// CORS setup
+app.use(cors({
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error('Not allowed by CORS'));
+    }
+}));
 
 app.use(express.json());
 
