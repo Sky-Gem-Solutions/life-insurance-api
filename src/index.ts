@@ -18,7 +18,9 @@ const ALLOWED_ORIGINS = APPLICATION_URLS.split(',');
 // CORS setup
 app.use(cors({
     origin: (origin, callback) => {
-        if (ALLOWED_ORIGINS.includes(origin)) {
+        // allow requests with no origin (like curl or Postman)
+        // if (!origin) return callback(null, true);
+        if (origin && ALLOWED_ORIGINS.includes(origin)) {
             return callback(null, true);
         }
         return callback(new Error('Not allowed by CORS'));
